@@ -7,11 +7,15 @@ const initialState = {
 };
 
 const MediumClap = () => {
+  const MAXIMUM_CLAP = 10;
   const [clapState, setClapState] = useState(initialState);
   const { count, countTotal } = clapState;
 
   const handleClapClick = () => {
-    setClapState((prevState) => ({ count: prevState.count + 1, countTotal: prevState.countTotal + 1 }));
+    setClapState((prevState) => ({
+      count: Math.min(prevState.count + 1, MAXIMUM_CLAP),
+      countTotal: count < MAXIMUM_CLAP ? prevState.countTotal + 1 : prevState.countTotal,
+    }));
   };
 
   return (
