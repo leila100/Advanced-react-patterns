@@ -6,7 +6,6 @@ import {
   HEADER_ALLOWANCE,
   SIDEBAR_LEFT_PADDING,
   LIGHTER_GREY,
-  LIGHT_PURPLE,
   GREY,
   zIndex
 } from './utils/constants'
@@ -63,9 +62,9 @@ const StyledNavigation = styled.nav`
       padding-top: ${() => `${SIDEBAR_LEFT_PADDING / 3}vw`};
       padding-bottom: ${() => `${SIDEBAR_LEFT_PADDING / 3}vw`};
     }
-
+    
     > a:hover {
-      color: ${() => `${LIGHT_PURPLE}`}
+      outline: ${() => `1px solid ${GREY}`};
     }
   `}
 `
