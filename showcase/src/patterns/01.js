@@ -36,10 +36,21 @@ const withClapAnimation = (WrappedComponent) => {
         y: { 0: -3 },
       });
 
+      const clapCount = new mojs.Html({
+        el: "#clapCount",
+        opacity: { 0: 1 },
+        y: { 0: -30 },
+        duration: tlDuration,
+      }).then({
+        opacity: { 1: 0 },
+        y: -80,
+        delay: tlDuration / 2,
+      });
+
       const clap = document.getElementById("clap");
       clap.style.transform = "scale(1,1)";
 
-      const newAnimationTimeline = this.animationTimeline.add([scaleButton, countTotal]);
+      const newAnimationTimeline = this.animationTimeline.add([scaleButton, countTotal, clapCount]);
       this.setState({ animationTimeline: newAnimationTimeline });
     }
 
@@ -94,7 +105,11 @@ const ClapIcon = ({ isClicked }) => {
 };
 
 const ClapCount = ({ count }) => {
-  return <span className={styles.count}>+ {count}</span>;
+  return (
+    <span id='clapCount' className={styles.count}>
+      + {count}
+    </span>
+  );
 };
 
 const ClapTotal = ({ countTotal }) => {
