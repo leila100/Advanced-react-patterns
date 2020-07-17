@@ -1,4 +1,13 @@
-import React, { useState, useLayoutEffect, useCallback, useContext, createContext, useMemo, useEffect } from "react";
+import React, {
+  useState,
+  useLayoutEffect,
+  useCallback,
+  useContext,
+  createContext,
+  useMemo,
+  useEffect,
+  useRef,
+} from "react";
 import mojs from "mo-js";
 import styles from "./index.css";
 
@@ -124,8 +133,12 @@ const MediumClap = ({ children, onClap }) => {
     totalEl: totalRef,
   });
 
+  //   used to make sure the onClap function is not run until user claps
+  const componentJustMounted = useRef(true);
   useEffect(() => {
-    onClap && onClap(clapState);
+    if (!componentJustMounted.current) {
+      onClap && onClap(clapState);
+    } else componentJustMounted.current = false;
   }, [count]);
 
   const handleClapClick = () => {
@@ -212,7 +225,7 @@ const Usage = () => {
         <MediumClap.Count />
         <MediumClap.Total />
       </MediumClap>
-      <div className={styles.info}>{`You have clapped ${count} times`}</div>
+      {!!count && <div className={styles.info}>{`You have clapped ${count} ${count === 1 ? "time" : "times"}`}</div>}
     </div>
   );
 };
