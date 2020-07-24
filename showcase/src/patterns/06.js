@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useCallback } from "react";
+import React, { useState, useLayoutEffect, useCallback, useRef, useEffect } from "react";
 import mojs from "mo-js";
 import styles from "./index.css";
 
@@ -138,6 +138,20 @@ const useClapState = (initialState = INITIAL_STATE) => {
   return [clapState, updateClapState];
 };
 
+/**
+ * Custom Hook for useEffect after mount
+ */
+
+const useEffectAfterMount = (cb, deps) => {
+  const componentJustMounted = useRef(true);
+  useEffect(() => {
+    if (!componentJustMounted.current) {
+      return cb();
+    }
+    componentJustMounted.current = false;
+  }, [...deps]);
+};
+
 const MediumClap = () => {
   const [clapState, updateClapState] = useClapState();
   const { count, countTotal, isClicked } = clapState;
@@ -150,13 +164,12 @@ const MediumClap = () => {
     totalEl: totalRef,
   });
 
-  const handleClapClick = () => {
+  useEffectAfterMount(() => {
     animationTimeline.replay();
-    updateClapState();
-  };
+  }, [count]);
 
   return (
-    <button ref={setRef} data-refkey='clapRef' className={styles.clap} onClick={handleClapClick}>
+    <button ref={setRef} data-refkey='clapRef' className={styles.clap} onClick={updateClapState}>
       <ClapIcon isClicked={isClicked} />
       <ClapCount count={count} setRef={setRef} />
       <ClapTotal countTotal={countTotal} setRef={setRef} />
